@@ -18,9 +18,7 @@ public class Post {
     private String body;
     private Date dateCreated;
 
-    public Post(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
+    public Post() {}
 
     public Long getId() {
         return id;
