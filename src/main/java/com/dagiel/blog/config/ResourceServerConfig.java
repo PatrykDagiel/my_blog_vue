@@ -18,7 +18,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.headers().frameOptions().disable().and()
                 .authorizeRequests()
                 .antMatchers("/","/home","/register","/login").permitAll()
-                .antMatchers("/private/**").authenticated();
+                .antMatchers("/private/**").authenticated()
+                .antMatchers("/post").authenticated();
+
     }
 
 
