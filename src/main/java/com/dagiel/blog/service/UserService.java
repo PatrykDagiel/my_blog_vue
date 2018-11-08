@@ -1,5 +1,6 @@
 package com.dagiel.blog.service;
 
+import com.dagiel.blog.entities.Post;
 import com.dagiel.blog.entities.User;
 import com.dagiel.blog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,5 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
 }

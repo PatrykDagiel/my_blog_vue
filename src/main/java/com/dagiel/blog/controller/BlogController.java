@@ -6,10 +6,7 @@ import com.dagiel.blog.service.PostService;
 import com.dagiel.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +38,11 @@ public class BlogController {
         post.setCreator(userService.getUser(userDetails.getUsername()));
         postService.insert(post);
         return "Post was published";
+    }
+
+    @GetMapping(value="/posts/{username}")
+    public List<Post> postsByUsername(@PathVariable String username) {
+        return postService.findUser(userService.getUser(username));
     }
 
 }
