@@ -1,5 +1,6 @@
 package com.dagiel.blog.config;
 
+
 import com.dagiel.blog.entities.Role;
 import com.dagiel.blog.entities.User;
 import org.springframework.security.core.GrantedAuthority;
