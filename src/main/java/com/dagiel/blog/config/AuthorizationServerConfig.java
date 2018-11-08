@@ -1,14 +1,23 @@
 package com.dagiel.blog.config;
 
+import com.dagiel.blog.entities.Role;
+import com.dagiel.blog.entities.User;
+import com.dagiel.blog.repositories.UserRepository;
+import com.dagiel.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+
+import java.util.Arrays;
 
 /**
  * Configures the authorization server.
@@ -21,6 +30,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     /**
      * Setting up the endpointsconfigurer authentication manager.
@@ -40,11 +53,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().
-                withClient("my-trusted-client")
+        clients
+                .inMemory()
+                .withClient("my-trusted-client")
                 .authorizedGrantTypes("client_credentials", "password")
-                .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT").scopes("read","write","trust")
-                .resourceIds("oauth2-resource").accessTokenValiditySeconds(5000).secret("secret");
+                .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
+                .scopes("read","write","trust")
+                .resourceIds("oauth2-resource")
+                .accessTokenValiditySeconds(5000)
+                .secret(passwordEncoder.encode("secret"));
     }
 
     /**
@@ -57,7 +74,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.checkTokenAccess("isAuthenticated()");
     }
-
 
 
 
